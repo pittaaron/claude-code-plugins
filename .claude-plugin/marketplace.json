@@ -1,0 +1,15 @@
+{
+  "name": "aaronpitt",
+  "owner": {
+    "name": "Aaron Pitt",
+    "url": "https://github.com/pittaaron"
+  },
+  "plugins": [
+    {
+      "name": "project-sync",
+      "source": "./plugins/advanced/project-sync",
+      "description": "Sync claude.ai projects, conversations, and knowledge files into Claude Code for offline context. Advanced — requires the claude-in-chrome MCP extension and one-time permission setup.",
+      "category": "advanced"
+    }
+  ]
+}

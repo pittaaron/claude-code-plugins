@@ -1,0 +1,12 @@
+{
+  "name": "project-sync",
+  "version": "0.1.0",
+  "description": "Bridge claude.ai project context into Claude Code. Syncs projects, conversations, knowledge files, and memory via the claude-in-chrome MCP extension.",
+  "author": {
+    "name": "Aaron Pitt"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/pittaaron/claude-code-plugins/tree/main/plugins/advanced/project-sync",
+  "category": "advanced",
+  "keywords": ["claude.ai", "sync", "context", "memory", "projects", "advanced"]
+}
