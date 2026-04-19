@@ -222,6 +222,39 @@ Build and download each project snapshot (in a single loop):
 })()
 ```
 
+**Note on browser permissions.** The first Blob download in a Chrome profile may prompt the user to allow downloads from claude.ai. Most profiles that have used claude.ai before grant silently. If the prompt appears, have the user click "Allow" and re-run the download call.
+
+**Fallback: chunked extraction (use only if Blob downloads are blocked)**
+
+If the browser blocks programmatic downloads (strict policies, sandboxed profile, user denied permission), fall back to pulling data out of the `window.__projectData` cache in slices. This is significantly slower — expect 50–150+ `javascript_tool` calls for a full refresh — but requires no download capability.
+
+Per-project metadata + file list (always fits in one return):
+
+```javascript
+(() => {
+  const d = window.__projectData['<PROJECT_UUID>'];
+  return JSON.stringify({
+    prompt_template: d.detail.prompt_template,
+    description: d.detail.description,
+    created_at: d.detail.created_at,
+    updated_at: d.detail.updated_at,
+    files: d.docs.map(f => ({
+      file_name: f.file_name,
+      estimated_token_count: f.estimated_token_count,
+      len: (f.content || '').length
+    }))
+  });
+})()
+```
+
+Per-file content in 800-byte slices:
+
+```javascript
+window.__projectData['<UUID>'].docs[<INDEX>].content.slice(START, END)
+```
+
+Loop across `START` values (0, 800, 1600, …) until you've covered `len`. The main agent accumulates slices into one string per file, assembles the full snapshot JSON, and writes it directly with `Write` tool.
+
 **Step 6 — Move downloads into place, preserving existing memory**
 
 Each project snapshot is set with `memory: null`. Before overwriting, preserve any existing memory value in case Step 7 fails for a project.
